@@ -1,32 +1,38 @@
-import { useEffect, useRef } from 'react';
-import { Room, RoomEvent, RemoteParticipant, RemoteTrack, RemoteTrackPublication } from 'livekit-client';
+import { useEffect, useState } from 'react';
+import { Room } from 'livekit-client';
+import { RoomContext, RoomAudioRenderer, ControlBar } from '@livekit/components-react';
 import '@livekit/components-styles';
 
 export default function VoiceAgent({ token, url }: { token: string; url: string }) {
-  const roomRef = useRef<Room | null>(null);
+
+  const [roomInstance] = useState(() => new Room());
 
   useEffect(() => {
-    const room = new Room();
-    roomRef.current = room;
-
+    let mounted = true;
     const connectLiveKit = async () => {
-      await room.connect(url, token);
-      await room.localParticipant.setMicrophoneEnabled(true);
-
-      room.on(RoomEvent.TrackSubscribed, async (track: RemoteTrack, pub: RemoteTrackPublication, participant: RemoteParticipant) => {
-        if (track.kind === 'audio') {
-          const audioElement = track.attach();
-          audioElement.play().catch(console.error);
-        }
-      });
+      await roomInstance.connect(url, token);
+      await roomInstance.localParticipant.setMicrophoneEnabled(true);
     };
 
     connectLiveKit();
 
     return () => {
-      room.disconnect();
+      mounted = false;
+      roomInstance.disconnect();
     };
-  }, [token, url]);
+  }, [token, url, roomInstance]);
 
-  return <div>🎙️ Voice Agent Connected. Start speaking!</div>;
+
+  if (token === '') {
+    return <div>Getting token...</div>
+  }
+
+  return (
+    <RoomContext.Provider value={roomInstance}>
+      <div data-lk-theme="default" className='h-[100dvh]'>
+        <RoomAudioRenderer />
+        <ControlBar />
+      </div>
+    </RoomContext.Provider>
+  );
 }
