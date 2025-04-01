@@ -1,64 +1,71 @@
-import { useEffect, useState, useCallback } from 'react';
-import { Room, RoomEvent } from 'livekit-client';
+"use client";
+
+import { CloseIcon } from "@/components/CloseIcon";
+import { NoAgentNotification } from "@/components/NoAgentNotification";
 import {
   AgentState,
   BarVisualizer,
   DisconnectButton,
-  VoiceAssistantControlBar,
-  RoomContext,
   RoomAudioRenderer,
-  useVoiceAssistant
-} from '@livekit/components-react';
+  RoomContext,
+  VoiceAssistantControlBar,
+  useVoiceAssistant,
+} from "@livekit/components-react";
 import { useKrispNoiseFilter } from "@livekit/components-react/krisp";
 import { AnimatePresence, motion } from "framer-motion";
-import '@livekit/components-styles';
-import { ConnectionDetails } from '@/app/api/token/route';
+import { Room, RoomEvent } from "livekit-client";
+import { useCallback, useEffect, useState } from "react";
+import type { ConnectionDetails } from "./api/connection-details/route";
 
-type conditionProp = {
-  conDetails: ConnectionDetails;
-}
-
-const VoiceAgent = ({ conDetails }: conditionProp) => {
+export default function Page() {
   const [agentState, setAgentState] = useState<AgentState>("disconnected");
-  const [roomInstance] = useState(() => new Room());
+
+  const [room] = useState(new Room());
+
   const onConnectButtonClicked = useCallback(async () => {
+    // Generate room connection details, including:
+    //   - A random Room name
+    //   - A random Participant name
+    //   - An Access Token to permit the participant to join the room
+    //   - The URL of the LiveKit server to connect to
+    //
+    // In real-world application, you would likely allow the user to specify their
+    // own participant name, and possibly to choose from existing rooms to join.
 
     const url = new URL(
-      process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT ?? "/api/token",
+      process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT ?? "/api/connection-details",
       window.location.origin
     );
     const response = await fetch(url.toString());
     const connectionDetailsData: ConnectionDetails = await response.json();
 
-    await roomInstance.connect(connectionDetailsData.serverUrl, connectionDetailsData.participantToken);
-    await roomInstance.localParticipant.setMicrophoneEnabled(true);
-  }, [roomInstance]);
+    await room.connect(connectionDetailsData.serverUrl, connectionDetailsData.participantToken);
+    await room.localParticipant.setMicrophoneEnabled(true);
+  }, [room]);
 
   useEffect(() => {
-    roomInstance.on(RoomEvent.MediaDevicesError, onDeviceFailure);
+    room.on(RoomEvent.MediaDevicesError, onDeviceFailure);
 
     return () => {
-      roomInstance.off(RoomEvent.MediaDevicesError, onDeviceFailure);
+      room.off(RoomEvent.MediaDevicesError, onDeviceFailure);
     };
-  }, [roomInstance]);
+  }, [room]);
 
   return (
     <main data-lk-theme="default" className="h-full grid content-center bg-[var(--lk-bg)]">
-      <RoomContext.Provider value={roomInstance}>
+      <RoomContext.Provider value={room}>
         <div className="lk-room-container grid grid-rows-[2fr_1fr] items-center">
           <SimpleVoiceAssistant onStateChange={setAgentState} />
           <ControlBar onConnectButtonClicked={onConnectButtonClicked} agentState={agentState} />
           <RoomAudioRenderer />
-          {/* <NoAgentNotification state={agentState} /> */}
+          <NoAgentNotification state={agentState} />
         </div>
       </RoomContext.Provider>
     </main>
   );
 }
 
-export default VoiceAgent;
-
-const SimpleVoiceAssistant = (props: { onStateChange: (state: AgentState) => void }) => {
+function SimpleVoiceAssistant(props: { onStateChange: (state: AgentState) => void }) {
   const { state, audioTrack } = useVoiceAssistant();
   useEffect(() => {
     props.onStateChange(state);
@@ -76,7 +83,11 @@ const SimpleVoiceAssistant = (props: { onStateChange: (state: AgentState) => voi
   );
 }
 
-const ControlBar = (props: { onConnectButtonClicked: () => void; agentState: AgentState }) => {
+function ControlBar(props: { onConnectButtonClicked: () => void; agentState: AgentState }) {
+  /**
+   * Use Krisp background noise reduction when available.
+   * Note: This is only available on Scale plan, see {@link https://livekit.io/pricing | LiveKit Pricing} for more details.
+   */
   const krisp = useKrispNoiseFilter();
   useEffect(() => {
     krisp.setNoiseFilterEnabled(true);
@@ -118,8 +129,7 @@ const ControlBar = (props: { onConnectButtonClicked: () => void; agentState: Age
   );
 }
 
-
-const onDeviceFailure = (error: Error) => {
+function onDeviceFailure(error: Error) {
   console.error(error);
   alert(
     "Error acquiring camera or microphone permissions. Please make sure you grant the necessary permissions in your browser and reload the tab"

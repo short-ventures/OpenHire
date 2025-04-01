@@ -1,39 +1,38 @@
 {
-  "name": "evaluation-interview",
+  "name": "voice-assistant2",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write ."
   },
   "dependencies": {
-    "@livekit/agents": "^0.7.1",
-    "@livekit/agents-plugin-cartesia": "^0.1.2",
-    "@livekit/agents-plugin-deepgram": "^0.5.4",
-    "@livekit/agents-plugin-openai": "^0.9.0",
-    "@livekit/agents-plugin-silero": "^0.5.5",
-    "@livekit/components-react": "^2.9.0",
-    "@livekit/components-styles": "^1.1.5",
-    "@livekit/rtc-node": "^0.13.8",
-    "env": "^0.0.2",
-    "livekit-client": "^2.9.9",
-    "livekit-server-sdk": "^2.10.2",
-    "next": "15.2.4",
-    "openai": "^4.90.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "@livekit/components-react": "^2.7.0",
+    "@livekit/components-styles": "^1.1.4",
+    "@livekit/krisp-noise-filter": "^0.2.14",
+    "framer-motion": "^11.18.0",
+    "livekit-client": "^2.8.0",
+    "livekit-server-sdk": "^2.9.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.2.4",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/node": "^20.17.13",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "14.2.26",
+    "eslint-config-prettier": "9.1.0",
+    "next": "14",
+    "postcss": "^8.5.1",
+    "prettier": "^3.4.2",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3"
+  },
+  "packageManager": "pnpm@9.15.9"
 }
