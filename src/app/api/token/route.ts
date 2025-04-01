@@ -38,8 +38,10 @@ export async function GET(req: NextRequest) {
       participantToken,
       participantName
     };
-    console.log(data);
-    return NextResponse.json(data);
+    const headers = new Headers({
+      "Cache-Control": "no-store",
+    });
+    return NextResponse.json(data, { headers });
   } catch (e) {
     if (e instanceof Error) {
 
