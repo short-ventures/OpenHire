@@ -15,7 +15,7 @@ import { useKrispNoiseFilter } from "@livekit/components-react/krisp";
 import { AnimatePresence, motion } from "framer-motion";
 import { Room, RoomEvent } from "livekit-client";
 import { useCallback, useEffect, useState } from "react";
-import type { ConnectionDetails } from "./api/connection-details/route";
+import type { ConnectionDetails } from "./api/token/route";
 
 export default function Page() {
   const [agentState, setAgentState] = useState<AgentState>("disconnected");
@@ -23,17 +23,8 @@ export default function Page() {
   const [room] = useState(new Room());
 
   const onConnectButtonClicked = useCallback(async () => {
-    // Generate room connection details, including:
-    //   - A random Room name
-    //   - A random Participant name
-    //   - An Access Token to permit the participant to join the room
-    //   - The URL of the LiveKit server to connect to
-    //
-    // In real-world application, you would likely allow the user to specify their
-    // own participant name, and possibly to choose from existing rooms to join.
-
     const url = new URL(
-      process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT ?? "/api/connection-details",
+      process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT ?? "/api/token",
       window.location.origin
     );
     const response = await fetch(url.toString());
@@ -84,10 +75,7 @@ function SimpleVoiceAssistant(props: { onStateChange: (state: AgentState) => voi
 }
 
 function ControlBar(props: { onConnectButtonClicked: () => void; agentState: AgentState }) {
-  /**
-   * Use Krisp background noise reduction when available.
-   * Note: This is only available on Scale plan, see {@link https://livekit.io/pricing | LiveKit Pricing} for more details.
-   */
+
   const krisp = useKrispNoiseFilter();
   useEffect(() => {
     krisp.setNoiseFilterEnabled(true);
