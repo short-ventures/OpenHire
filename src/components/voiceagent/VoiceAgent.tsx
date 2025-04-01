@@ -10,8 +10,11 @@ export default function VoiceAgent({ token, url }: { token: string; url: string 
   useEffect(() => {
     let mounted = true;
     const connectLiveKit = async () => {
-      await roomInstance.connect(url, token);
-      await roomInstance.localParticipant.setMicrophoneEnabled(true);
+      try {
+        await roomInstance.connect(url, token);
+        await roomInstance.localParticipant.setMicrophoneEnabled(true);
+      } catch (err) {
+      }
     };
 
     connectLiveKit();

@@ -4,16 +4,19 @@ import { useEffect, useState } from 'react';
 import VoiceAgent from '@/components/voiceagent/VoiceAgent';
 
 export default function Home() {
-  const [token, setToken] = useState('');
-  const [url, setUrl] = useState('');
+  const [token, setToken] = useState<string | null>('');
+  const [url, setUrl] = useState<string | null>('');
 
   useEffect(() => {
     const fetchToken = async () => {
-      const res = await fetch(`/api/livekit?room=interview-room&participant=user123`);
+      console.log("`~~~~~~~~~~~~~");
+      const res = await fetch(`/api/token`);
+      console.log(res)
       const data = await res.json();
-      setToken(data.token);
-      setUrl(data.url);
+      setToken(data.participantToken);
+      setUrl(data.serverUrl);
     };
+    console.log("hello")
     fetchToken();
   }, []);
 
