@@ -2,18 +2,24 @@ import { useEffect, useState } from 'react';
 import { Room } from 'livekit-client';
 import { RoomContext, RoomAudioRenderer, ControlBar } from '@livekit/components-react';
 import '@livekit/components-styles';
+import { ConnectionDetails } from '@/app/api/token/route';
 
-export default function VoiceAgent({ token, url }: { token: string; url: string }) {
+type conditionProp = {
+  conDetails: ConnectionDetails;
+}
 
+export default function VoiceAgent({ conDetails }: conditionProp) {
   const [roomInstance] = useState(() => new Room());
 
   useEffect(() => {
     let mounted = true;
     const connectLiveKit = async () => {
       try {
-        await roomInstance.connect(url, token);
+        await roomInstance.connect(conDetails.serverUrl, conDetails.participantToken);
         await roomInstance.localParticipant.setMicrophoneEnabled(true);
       } catch (err) {
+        console.log(conDetails.serverUrl);
+        console.log("server connection error", err);
       }
     };
 
@@ -23,10 +29,10 @@ export default function VoiceAgent({ token, url }: { token: string; url: string 
       mounted = false;
       roomInstance.disconnect();
     };
-  }, [token, url, roomInstance]);
+  }, [conDetails, roomInstance]);
 
 
-  if (token === '') {
+  if (conDetails.participantToken === '') {
     return <div>Getting token...</div>
   }
 

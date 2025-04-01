@@ -2,28 +2,24 @@
 
 import { useEffect, useState } from 'react';
 import VoiceAgent from '@/components/voiceagent/VoiceAgent';
+import { ConnectionDetails } from './api/token/route';
 
 export default function Home() {
-  const [token, setToken] = useState<string | null>('');
-  const [url, setUrl] = useState<string | null>('');
+  const [connectionDetails, setConnectionDetails] = useState<ConnectionDetails | undefined>(undefined);
 
   useEffect(() => {
     const fetchToken = async () => {
-      console.log("`~~~~~~~~~~~~~");
       const res = await fetch(`/api/token`);
-      console.log(res)
       const data = await res.json();
-      setToken(data.participantToken);
-      setUrl(data.serverUrl);
+      setConnectionDetails(data);
     };
-    console.log("hello")
     fetchToken();
   }, []);
 
   return (
     <div>
       <h1>AI Interview Voice Agent</h1>
-      {token && url ? <VoiceAgent token={token} url={url} /> : 'Loading agent...'}
+      {connectionDetails ? <VoiceAgent conDetails={connectionDetails} /> : 'Loading agent...'}
     </div>
   );
 }
