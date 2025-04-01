@@ -28,6 +28,7 @@ export default function Page() {
       window.location.origin
     );
     const response = await fetch(url.toString());
+    await fetch('/api/voice-agent');
     const connectionDetailsData: ConnectionDetails = await response.json();
 
     await room.connect(connectionDetailsData.serverUrl, connectionDetailsData.participantToken);
