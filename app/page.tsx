@@ -28,15 +28,15 @@ export default function Page() {
       window.location.origin
     );
     const response = await fetch(url.toString());
-    const responseAgent = await fetch('/api/request-agent', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
+    // const responseAgent = await fetch('/api/request-agent', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   }
+    // });
+    // if (!responseAgent.ok) {
+    //   throw new Error('Network response was not ok');
+    // }
     const connectionDetailsData: ConnectionDetails = await response.json();
 
     await room.connect(connectionDetailsData.serverUrl, connectionDetailsData.participantToken);
