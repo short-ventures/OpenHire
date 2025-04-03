@@ -52,7 +52,7 @@ export default function Page() {
   }, [room]);
 
   return (
-    <main data-lk-theme="default" className="h-full grid content-center bg-[var(--lk-bg)]">
+    <div data-lk-theme="default" className="h-full grid content-center bg-[var(--lk-bg)]">
       <RoomContext.Provider value={room}>
         <div className="lk-room-container grid grid-rows-[2fr_1fr] items-center">
           <SimpleVoiceAssistant onStateChange={setAgentState} />
@@ -61,7 +61,7 @@ export default function Page() {
           <NoAgentNotification state={agentState} />
         </div>
       </RoomContext.Provider>
-    </main>
+    </div>
   );
 }
 
@@ -71,10 +71,10 @@ function SimpleVoiceAssistant(props: { onStateChange: (state: AgentState) => voi
     props.onStateChange(state);
   }, [props, state]);
   return (
-    <div className="h-[300px] max-w-[90vw] mx-auto">
+    <div className="h-[300px] max-w-[30vw] mx-auto">
       <BarVisualizer
         state={state}
-        barCount={5}
+        barCount={10}
         trackRef={audioTrack}
         className="agent-visualizer"
         options={{ minHeight: 24 }}

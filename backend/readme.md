@@ -1,17 +1,3 @@
-### Frontend
-
-### Prerequisites
-
-- Node.js 23.0.0
-
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-
 ### Backend
 
 ### Prerequisites

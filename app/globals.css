@@ -5,10 +5,11 @@
 :root {
   --lk-va-bar-width: 72px;
   --lk-control-bar-height: unset;
+  --lk-va-bar-border-radius: 0px;
 }
 
-.agent-visualizer > .lk-audio-bar {
-  width: 72px;
+.agent-visualizer>.lk-audio-bar {
+  width: 20px;
 }
 
 .lk-agent-control-bar {
