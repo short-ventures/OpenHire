@@ -18,9 +18,11 @@ npm run dev
 - Python 3.13.0
 
 ```bash
-cd agent
-python3 -m venv venv
-source venv/bin/activate
+cd backend
+python -m venv venv
+cd venv/scripts
+activate
+cd ../..
 pip install -r requirements.txt
-python agent.py dev
+py agent.py dev
 ```
