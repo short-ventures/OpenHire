@@ -6,7 +6,7 @@ import {
   DisconnectButton,
   VoiceAssistantControlBar,
 } from "@livekit/components-react";
-import { CloseIcon } from "@/components/interview/CloseIcon";
+import CloseIcon from "@/components/icons/CloseIcon";
 
 const ControlBar = (props: { onConnectButtonClicked: () => void; agentState: AgentState }) => {
 

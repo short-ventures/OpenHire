@@ -7,13 +7,11 @@ import {
 } from "@livekit/components-react";
 import { Room, RoomEvent } from "livekit-client";
 import { useCallback, useEffect, useState } from "react";
-import { NoAgentNotification } from "@/components/interview/NoAgentNotification";
+import { alertNoDevice } from "@/utils/constant";
 import type { ConnectionDetails } from "@/app/api/token/route";
-import SimpleVoiceAssistant from "./VoiceAssistant";
-import ControlBar from "./ControlBar";
-import {
-  alertNoDevice,
-} from "./constant";
+import ControlBar from "@/components/feature/Interview/ControlBar";
+import SimpleVoiceAssistant from "@/components/feature/Interview/VoiceAssistant";
+import { NoAgentNotification } from "@/components/feature/Interview/NoAgentNotification";
 
 const Interview = () => {
   const [agentState, setAgentState] = useState<AgentState>("disconnected");
@@ -41,7 +39,6 @@ const Interview = () => {
   }, [room]);
 
   const onDeviceFailure = (error: Error) => {
-    console.error(error);
     alert(alertNoDevice);
   }
 

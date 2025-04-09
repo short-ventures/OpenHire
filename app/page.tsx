@@ -1,6 +1,6 @@
 "use client";
 
-import Interview from "@/components/interview";
+import Interview from "@/components/feature/Interview";
 
 export default function Page() {
   return (

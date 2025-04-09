@@ -2,7 +2,7 @@ import type { AgentState } from "@livekit/components-react";
 import { useEffect, useRef, useState } from "react";
 import {
   timeWaitForAgent,
-} from "./constant";
+} from "../../../../utils/constant";
 
 interface NoAgentNotificationProps extends React.PropsWithChildren<object> {
   state: AgentState;
