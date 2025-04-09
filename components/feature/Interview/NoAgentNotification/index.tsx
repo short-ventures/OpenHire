@@ -1,8 +1,6 @@
 import type { AgentState } from "@livekit/components-react";
 import { useEffect, useRef, useState } from "react";
-import {
-  timeWaitForAgent,
-} from "../../../../utils/constant";
+import { timeWaitForAgent } from "@/utils/constant";
 
 interface NoAgentNotificationProps extends React.PropsWithChildren<object> {
   state: AgentState;
@@ -11,7 +9,7 @@ interface NoAgentNotificationProps extends React.PropsWithChildren<object> {
 /**
  * Renders some user info when no agent connects to the room after a certain time.
  */
-export const NoAgentNotification = (props: NoAgentNotificationProps) => {
+const NoAgentNotification = (props: NoAgentNotificationProps) => {
   const timeToWaitMs = timeWaitForAgent;
   const timeoutRef = useRef<number | null>(null);
   const [showNotification, setShowNotification] = useState(false);
@@ -100,3 +98,5 @@ export const NoAgentNotification = (props: NoAgentNotificationProps) => {
     </>
   );
 }
+
+export default NoAgentNotification

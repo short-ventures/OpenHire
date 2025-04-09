@@ -10,8 +10,8 @@ import { useCallback, useEffect, useState } from "react";
 import { alertNoDevice } from "@/utils/constant";
 import type { ConnectionDetails } from "@/app/api/token/route";
 import ControlBar from "@/components/feature/Interview/ControlBar";
-import SimpleVoiceAssistant from "@/components/feature/Interview/VoiceAssistant";
-import { NoAgentNotification } from "@/components/feature/Interview/NoAgentNotification";
+import VoiceAssistant from "@/components/feature/Interview/VoiceAssistant";
+import NoAgentNotification from "@/components/feature/Interview/NoAgentNotification";
 
 const Interview = () => {
   const [agentState, setAgentState] = useState<AgentState>("disconnected");
@@ -47,7 +47,7 @@ const Interview = () => {
     <div data-lk-theme="default" className="h-full grid content-center bg-[var(--lk-bg)]">
       <RoomContext.Provider value={room}>
         <div className="lk-room-container grid grid-rows-[2fr_1fr] items-center">
-          <SimpleVoiceAssistant onStateChange={setAgentState} />
+          <VoiceAssistant onStateChange={setAgentState} />
           <ControlBar onConnectButtonClicked={onConnectButtonClicked} agentState={agentState} />
           <RoomAudioRenderer />
           <NoAgentNotification state={agentState} />

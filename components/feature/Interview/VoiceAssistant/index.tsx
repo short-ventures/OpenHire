@@ -5,7 +5,7 @@ import {
   useVoiceAssistant,
 } from "@livekit/components-react";
 
-const SimpleVoiceAssistant = (props: { onStateChange: (state: AgentState) => void }) => {
+const VoiceAssistant = (props: { onStateChange: (state: AgentState) => void }) => {
   const { state, audioTrack } = useVoiceAssistant();
   useEffect(() => {
     props.onStateChange(state);
@@ -23,4 +23,4 @@ const SimpleVoiceAssistant = (props: { onStateChange: (state: AgentState) => voi
   );
 }
 
-export default SimpleVoiceAssistant
+export default VoiceAssistant
