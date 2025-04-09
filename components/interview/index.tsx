@@ -40,6 +40,12 @@ const Interview = () => {
     };
   }, [room]);
 
+  const onDeviceFailure = (error: Error) => {
+    console.error(error);
+    alert(alertNoDevice);
+  }
+
+
   return (
     <div data-lk-theme="default" className="h-full grid content-center bg-[var(--lk-bg)]">
       <RoomContext.Provider value={room}>
@@ -53,12 +59,5 @@ const Interview = () => {
     </div>
   );
 }
-
-
-const onDeviceFailure = (error: Error) => {
-  console.error(error);
-  alert(alertNoDevice);
-}
-
 
 export default Interview
